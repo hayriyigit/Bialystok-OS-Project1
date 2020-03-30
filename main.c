@@ -2,8 +2,40 @@
 #include<stdlib.h>
 #include<string.h>
 
+# define BUFFER_SIZE 256
+# define ARG_BUFFER_SIZE 64
+# define SPLIT_CHARS " \t\r\n\a"
+
+
+char **splitLine(char *line){
+	int bufsize = ARG_BUFFER_SIZE;
+	int position = 0;
+
+	char **tokens = malloc(bufsize*sizeof(char *)); // POINTER TO POINTER (POINTER FOR STORING POINTERS)
+	char *token; // POINTER FOR HOLDING ANY ARG
+
+	token = strtok(line, SPLIT_CHARS); // GET THE FIRST ARGUMENT (NAME OF THE PROGRAM)
+
+	while(token != NULL){
+		tokens[position] = token; // ADD POINTER OF ARGUMENT TO ARRAY OF POINTER
+		position++;
+
+		if(position >= bufsize){
+			bufsize += ARG_BUFFER_SIZE;
+			tokens = realloc(tokens, sizeof(char*)*bufsize); // EXTEND THE ALLOCATED MEMORY
+		}
+
+		token = strtok(NULL, SPLIT_CHARS); // GET OTHER SPLITTED ARGS 
+	}
+
+	tokens[position] = NULL;
+
+	return tokens;
+}
+
+
 char *getLine(void){
-	int bufsize = 1024;
+	int bufsize = BUFFER_SIZE;
 	char *ptr = malloc(sizeof(char) * bufsize);
 	
 	int position = 0;
@@ -21,16 +53,31 @@ char *getLine(void){
 		}
 		position++;
 
+		if(position >= bufsize){
+			bufsize += BUFFER_SIZE;
+			ptr = realloc(ptr, bufsize);
+		}
 	}
 }
 
+
 void lsh_loop(){
-	char *line;	
-	do{
-		printf("> ");
+	char *line;
+	char **args;
+	int position = 0;
+	while(1){
+		printf("➜ ");
 		line = getLine();
-		printf("Line is : %s\n", line);		
-	}while(1);
+		args = splitLine(line);
+		while(position <=6){
+			printf("%d : %s\n",position, args[position]);
+			position++;
+		}
+		position = 0;
+
+		free(line);
+		free(args);
+	};
 }
 
 
