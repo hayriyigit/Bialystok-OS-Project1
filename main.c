@@ -1,13 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-<<<<<<< HEAD
-#include<unistd.h>
-=======
 #include<sys/types.h>
 #include<unistd.h>
 #include <sys/wait.h>
->>>>>>> 35019998e5e447be009a850c4be37215106f2103
 
 # define BUFFER_SIZE 256
 # define ARG_BUFFER_SIZE 64
