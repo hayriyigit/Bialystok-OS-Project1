@@ -1,6 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<sys/types.h>
+#include<unistd.h>
+#include <sys/wait.h>
 
 # define BUFFER_SIZE 256
 # define ARG_BUFFER_SIZE 64
@@ -32,6 +35,37 @@ char **splitLine(char *line){
 
 	return tokens;
 }
+
+
+int spawnProcess(char* program, char* line[]){
+	pid_t childProcess = fork();
+	int childStatus;
+	//process success, inside child process.. 
+	if ((int)childProcess == 0){
+		printf("Child spawn: %d\n", (int) childProcess);
+		execvp (program, line);
+		printf("Something went wrong pal..\n");
+	} 
+	//process fail
+	else if ((int) childProcess < 0){
+		fprintf(stderr, "Fork failed");
+		exit(-1);
+	//we inside parent...		
+	} else if ((int) childProcess > 0){
+		pid_t parent;
+		do{
+			parent = wait(&childStatus);
+			if(parent != childProcess){
+				printf("Process is gone to heaven, or something.");
+			}
+		} while(parent != childProcess);
+		return childStatus;
+	}
+
+}
+
+
+
 
 
 char *getLine(void){
@@ -74,7 +108,7 @@ void lsh_loop(){
 			position++;
 		}
 		position = 0;
-
+		spawnProcess(line, args);
 		free(line);
 		free(args);
 	};
