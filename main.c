@@ -1,10 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<unistd.h>
 
 # define BUFFER_SIZE 256
 # define ARG_BUFFER_SIZE 64
 # define SPLIT_CHARS " \t\r\n\a"
+
 
 
 char **splitLine(char *line){
@@ -37,7 +39,7 @@ char **splitLine(char *line){
 char *getLine(void){
 	int bufsize = BUFFER_SIZE;
 	char *ptr = malloc(sizeof(char) * bufsize);
-	
+
 	int position = 0;
 	int c;
 
@@ -61,12 +63,18 @@ char *getLine(void){
 }
 
 
-void lsh_loop(){
+void shell_loop(){
 	char *line;
 	char **args;
+
+	char buf[BUFSIZ];
+	char *cwd;
+
 	int position = 0;
+
 	while(1){
-		printf("➜ ");
+		cwd = getcwd(buf, sizeof(buf));
+		printf("%s ➜ ",cwd);
 		line = getLine();
 		args = splitLine(line);
 		while(position <=6){
@@ -85,6 +93,6 @@ void lsh_loop(){
 
 int main(int argc, char *argv[]){
 
-	lsh_loop();
+	shell_loop();
 	return 0;
 }
