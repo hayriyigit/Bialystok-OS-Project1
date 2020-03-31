@@ -100,14 +100,10 @@ void shell_loop(){
 	char *line;
 	char **args;
 
-	char buf[BUFSIZ];
-	char *cwd;
-
 	int position = 0;
 
 	while(1){
-		cwd = getcwd(buf, sizeof(buf));
-		printf("%s ➜ ",cwd);
+		printf("➜ ");
 		line = getLine();
 		args = splitLine(line);
 		while(position <=6){
