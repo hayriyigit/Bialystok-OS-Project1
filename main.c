@@ -100,12 +100,49 @@ char *getLine(void){
 	}
 }
 
+int getArrSize(char *arr){
+	int counter = 0;
+	char elem;
+	do{
+		counter++;
+		
+	}while(arr[counter] != 0);
 
+	return counter;
+}
+
+int getDashPos(char *arr, int position, int reverse){
+	if(reverse == 1){
+		do{
+			position--;
+		}while(arr[position] != '/');
+		return position;
+	} else if(reverse == 0){
+		do{
+			position++;
+		}while(arr[position] != '/');
+		return position;
+	} else{
+		printf("Unproper use of getDashPos, check params!");
+		exit(-1);
+	}
+	
+}
+
+void getSubstring(int size, char* thing){
+	printf("%.*s", 4, thing + size);
+}
 void shell_loop(){
 	char *line;
 	char **args;
-
+	char buf[BUFSIZ];
+	char *cwd;
 	while(1){
+		cwd = getcwd(buf, sizeof(buf));
+		int size = getArrSize(cwd);
+		int dashPos = getDashPos(cwd, size, 1);
+
+		getSubstring(dashPos + 1, cwd);
 		printf("%s ➜ ", getenv("USER"));
 		line = getLine();
 
