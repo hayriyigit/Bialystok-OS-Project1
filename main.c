@@ -111,16 +111,16 @@ int getArrSize(char *arr){
 	return counter;
 }
 
-int getDashPos(char *arr, int position, int reverse){
+int getCharPos(char *arr, int position, int reverse, char target){
 	if(reverse == 1){
 		do{
 			position--;
-		}while(arr[position] != '/');
+		}while(arr[position] != target);
 		return position;
 	} else if(reverse == 0){
 		do{
 			position++;
-		}while(arr[position] != '/');
+		}while(arr[position] != target);
 		return position;
 	} else{
 		printf("Unproper use of getDashPos, check params!");
@@ -129,8 +129,8 @@ int getDashPos(char *arr, int position, int reverse){
 	
 }
 
-void getSubstring(int size, char* thing){
-	printf("%.*s", 4, thing + size);
+void getSubstring(int offset, char* thing, int size){
+	printf("%.*s", size, thing + offset);
 }
 void shell_loop(){
 	char *line;
@@ -140,9 +140,9 @@ void shell_loop(){
 	while(1){
 		cwd = getcwd(buf, sizeof(buf));
 		int size = getArrSize(cwd);
-		int dashPos = getDashPos(cwd, size, 1);
-
-		getSubstring(dashPos + 1, cwd);
+		int firstPosLastDash = getCharPos(cwd, size, 1, '/');
+		int endPos = getCharPos(cwd, size, 1, 0);
+		getSubstring(firstPosLastDash + 1, cwd, endPos - firstPosLastDash);
 		printf("%s ➜ ", getenv("USER"));
 		line = getLine();
 
