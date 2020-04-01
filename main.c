@@ -2,14 +2,14 @@
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
+#include<signal.h>
+
 #include<sys/types.h>
-#include<unistd.h>
 #include <sys/wait.h>
 
 # define BUFFER_SIZE 256
 # define ARG_BUFFER_SIZE 64
 # define SPLIT_CHARS " \t\r\n\a"
-
 
 
 char **splitLine(char *line){
@@ -39,14 +39,21 @@ char **splitLine(char *line){
 }
 
 
-int spawnProcess(char* program, char* line[]){
+int spawnProcess(char **args){
+	printf ("This is the parent. PID=%d\n", getpid());
+
 	pid_t childProcess = fork();
 	int childStatus;
+
 	//process success, inside child process.. 
 	if ((int)childProcess == 0){
-		printf("Child spawn: %d\n", (int) childProcess);
-		execvp (program, line);
-		printf("Something went wrong pal..\n");
+		printf("Child spawn: %d\n", getpid());
+
+		if(execvp (args[0], args) == -1){
+			printf("Command Not Found!\n");
+			kill(getpid(), SIGTERM);
+		}
+		
 	} 
 	//process fail
 	else if ((int) childProcess < 0){
@@ -56,6 +63,7 @@ int spawnProcess(char* program, char* line[]){
 	} else if ((int) childProcess > 0){
 		pid_t parent;
 		do{
+			
 			parent = wait(&childStatus);
 			if(parent != childProcess){
 				printf("Process is gone to heaven, or something.");
@@ -65,9 +73,6 @@ int spawnProcess(char* program, char* line[]){
 	}
 
 }
-
-
-
 
 
 char *getLine(void){
@@ -101,24 +106,22 @@ void shell_loop(){
 	char *line;
 	char **args;
 
-	int position = 0;
-
 	while(1){
-		printf("➜ ");
+		printf("%s ➜ ", getenv("USER"));
 		line = getLine();
-		args = splitLine(line);
-		while(position <=6){
-			printf("%d : %s\n",position, args[position]);
-			position++;
+
+		if ((int)*line == 0)
+		{
+			free(line);
+			continue;
 		}
-		position = 0;
-		spawnProcess(line, args);
+
+		args = splitLine(line);
+		spawnProcess(args);
 		free(line);
 		free(args);
 	};
 }
-
-
 
 
 int main(int argc, char *argv[]){
