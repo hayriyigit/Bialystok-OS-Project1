@@ -9,7 +9,7 @@
 # define BUFFER_SIZE 256
 # define ARG_BUFFER_SIZE 64
 # define SPLIT_CHARS " \t\r\n\a"
-
+# define SIGINT 2 
 
 char **splitLine(char *line){
 	int bufsize = ARG_BUFFER_SIZE;
@@ -129,6 +129,12 @@ int getCharPos(char *arr, int position, int reverse, char target){
 	
 }
 
+void handle_sigint(int sig) 
+{ 
+    printf(" HAHA fuck your sigterm! %d\n", sig); 
+} 
+  
+
 void getSubstring(int offset, char* thing, int size){
 	printf("%.*s", size, thing + offset);
 }
@@ -144,8 +150,9 @@ void shell_loop(){
 		int endPos = getCharPos(cwd, size, 1, 0);
 		getSubstring(firstPosLastDash + 1, cwd, endPos - firstPosLastDash);
 		printf("%s ➜ ", getenv("USER"));
+		signal(SIGINT, handle_sigint); 
 		line = getLine();
-
+		
 		if ((int)*line == 0)
 		{
 			free(line);
@@ -156,6 +163,8 @@ void shell_loop(){
 		spawnProcess(args);
 		free(line);
 		free(args);
+
+		
 	};
 }
 
