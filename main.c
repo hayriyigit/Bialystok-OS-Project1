@@ -5,11 +5,12 @@
 #include<signal.h>
 #include<sys/types.h>
 #include <sys/wait.h>
+#define BUFFER_SIZE 256
+#define ARG_BUFFER_SIZE 64
+#define SPLIT_CHARS " \t\r\n\a"
+#define SIGINT 2 
+#define SIGQUIT 3
 
-# define BUFFER_SIZE 256
-# define ARG_BUFFER_SIZE 64
-# define SPLIT_CHARS " \t\r\n\a"
-# define SIGINT 2 
 
 char **splitLine(char *line){
 	int bufsize = ARG_BUFFER_SIZE;
@@ -132,9 +133,12 @@ int getCharPos(char *arr, int position, int reverse, char target){
 void handle_sigint(int pid) 
 { 
     printf("\0");
-} 
-  
+}
 
+void handle_sigquit(int pid){
+	exit(0);
+}
+  
 void getSubstring(int offset, char* thing, int size){
 	printf(" %.*s ᐅ ", size, thing + offset);
 }
@@ -151,12 +155,12 @@ void shell_loop(){
 		int firstPosLastDash = getCharPos(cwd, size, 1, '/');
 
 		int endPos = getCharPos(cwd, size, 1, 0);
-
+		
 		printf("%s ➜ ", getenv("USER"));
 		getSubstring(firstPosLastDash + 1, cwd, endPos - firstPosLastDash);
 		
 		signal(SIGINT, handle_sigint);
-
+		signal(SIGQUIT, handle_sigquit);
 		line = getLine();
 		
 		if ((int)*line == 0)
