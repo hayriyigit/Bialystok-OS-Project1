@@ -129,15 +129,17 @@ int getCharPos(char *arr, int position, int reverse, char target){
 	
 }
 
-void handle_sigint(int sig) 
+void handle_sigint(int pid) 
 { 
-    printf(" HAHA fuck your sigterm! %d\n", sig); 
+    printf("\0");
 } 
   
 
 void getSubstring(int offset, char* thing, int size){
-	printf("%.*s", size, thing + offset);
+	printf(" %.*s ᐅ ", size, thing + offset);
 }
+
+
 void shell_loop(){
 	char *line;
 	char **args;
@@ -147,10 +149,14 @@ void shell_loop(){
 		cwd = getcwd(buf, sizeof(buf));
 		int size = getArrSize(cwd);
 		int firstPosLastDash = getCharPos(cwd, size, 1, '/');
+
 		int endPos = getCharPos(cwd, size, 1, 0);
-		getSubstring(firstPosLastDash + 1, cwd, endPos - firstPosLastDash);
+
 		printf("%s ➜ ", getenv("USER"));
-		signal(SIGINT, handle_sigint); 
+		getSubstring(firstPosLastDash + 1, cwd, endPos - firstPosLastDash);
+		
+		signal(SIGINT, handle_sigint);
+
 		line = getLine();
 		
 		if ((int)*line == 0)
