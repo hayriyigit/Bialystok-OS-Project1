@@ -87,6 +87,8 @@ char *getLine(void){
 		
 		if(c == EOF || c == '\n'){
 			ptr[position] = '\0';
+			//addline to stack
+        	push(ptr);
 			return ptr;
 		}
 		else{
@@ -136,6 +138,7 @@ void handle_sigint(int pid)
 }
 
 void handle_sigquit(int pid){
+	writeFile();
 	exit(0);
 }
   
