@@ -8,15 +8,13 @@ void writeFile(){
         printf("Error opening file!\n");
         exit(1);
     }
-    char *line;
-    line = stack[0];
-    
-    
+    do{
+    	char line[1024];
+    	strcpy(line,pop());
+    	printf("%s\n",line);
+    }while(isEmpty() != 1);
 
     
     fclose(f);
-   printf("haha");
-
-
 }
 

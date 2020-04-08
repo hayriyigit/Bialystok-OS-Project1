@@ -1,9 +1,12 @@
 #include <stdio.h>
+#include<stdlib.h>
+#include<string.h>
 
 int MAXSIZE = 1024;
 int top = -1;
-char* stack[1024];
 
+char stack[20][1024];
+char line[1024];
 
 int size(){
     return MAXSIZE;
@@ -26,14 +29,16 @@ int isFull(){
 
 }
 
-char* peek(){
+char *peek(){
     return stack[top];
 }
 
-void push(char* value){
+void push(char *value){
+	strcpy(line, value);
+
     if(isFull() != 1){
         top++;
-        stack[top] = value;
+        strcpy(stack[top],line);
     } else{
         printf("STACK OVERFLOW");
     }
@@ -41,12 +46,13 @@ void push(char* value){
     
 }
 
-char* pop(){
+char *pop(){
     if(isEmpty() != 1){
-        char *value = stack[top];
+        strcpy(line, stack[top]);
+  		printf("%s\n",stack[top]);
         top--;
-        stack[top] = NULL;
-        return value;
+        strcpy(stack[top], NULL);
+        return line;
     } else{
         printf("STACK IS EMPTY");
         return NULL;

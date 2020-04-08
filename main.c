@@ -14,7 +14,6 @@
 #define SIGINT 2 
 #define SIGQUIT 3
 
-
 char **splitLine(char *line){
 	int bufsize = ARG_BUFFER_SIZE;
 	int position = 0;
