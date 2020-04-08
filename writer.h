@@ -1,17 +1,22 @@
 #include <stdio.h>
+#include "stack.h"
 
-
-void writeFile(char *line){
+void writeFile(){
     FILE *f = fopen("file.txt", "w");
     if (f == NULL)
     {
         printf("Error opening file!\n");
         exit(1);
     }
+    char *line;
+    line = stack[0];
+    
+    
 
-    /* print some text */
-    fprintf(f, "\n", line);
+    
     fclose(f);
+   printf("haha");
+
 
 }
 

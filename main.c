@@ -5,6 +5,9 @@
 #include<signal.h>
 #include<sys/types.h>
 #include <sys/wait.h>
+#include "writer.h"
+
+
 #define BUFFER_SIZE 256
 #define ARG_BUFFER_SIZE 64
 #define SPLIT_CHARS " \t\r\n\a"

@@ -41,7 +41,7 @@ void push(char* value){
     
 }
 
-char* popStack(){
+char* pop(){
     if(isEmpty() != 1){
         char *value = stack[top];
         top--;
@@ -51,5 +51,5 @@ char* popStack(){
         printf("STACK IS EMPTY");
         return NULL;
     }
-    
+  
 }
