@@ -1,11 +1,11 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
-#include<string.h>
+#include <string.h>
 #include "stack.h"
 
 void writeFile(){
-    FILE *f = fopen("file.txt", "w");
+    FILE *f = fopen(".file.txt", "w");
     if (f == NULL)
     {
         printf("Error opening file!\n");
@@ -33,7 +33,7 @@ void readFile(){
     size_t len = 0;
     ssize_t read;
 
-    fp = fopen("file.txt" , "r");
+    fp = fopen(".file.txt" , "r");
 
     if (fp == NULL){
         printf("There is no history file\n");

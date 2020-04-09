@@ -3,6 +3,7 @@
 #include<string.h>
 #include<unistd.h>
 #include<signal.h>
+#include <ctype.h>
 #include<sys/types.h>
 #include <sys/wait.h>
 #include "writer.h"
@@ -38,6 +39,18 @@ char **splitLine(char *line){
 	tokens[position] = NULL;
 
 	return tokens;
+}
+
+int isBlank(char *line)
+{
+	int n = (int) strlen(line);
+	int i;
+
+	for (i = 0; i < n; i++) {
+		if (!isspace(line[i]))
+			return 0;
+	}
+	return 1;
 }
 
 
@@ -90,7 +103,9 @@ char *getLine(void){
 		if(c == EOF || c == '\n'){
 			ptr[position] = '\0';
 			//addline to stack
-        	push(ptr);
+			if(!isBlank(ptr)){
+        		push(ptr);
+			}
 			writeFile();
 			return ptr;
 		}
@@ -169,7 +184,7 @@ void shell_loop(){
 		signal(SIGQUIT, handle_sigquit);
 		line = getLine();
 		
-		if ((int)*line == 0)
+		if (isBlank(line))
 		{
 			free(line);
 			continue;
