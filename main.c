@@ -91,6 +91,7 @@ char *getLine(void){
 			ptr[position] = '\0';
 			//addline to stack
         	push(ptr);
+			writeFile();
 			return ptr;
 		}
 		else{
@@ -139,8 +140,8 @@ void handle_sigint(int pid)
     printf("\0");
 }
 
-void handle_sigquit(int pid){
-	writeFile();
+void handle_sigquit(){
+
 	exit(0);
 }
   
@@ -185,7 +186,7 @@ void shell_loop(){
 
 
 int main(int argc, char *argv[]){
-
+	readFile();
 	shell_loop();
 	return 0;
 }

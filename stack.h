@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-int MAXSIZE = 1024;
+int MAXSIZE = 19;
 int top = -1;
 
 char stack[20][1024];
@@ -41,6 +41,8 @@ void push(char *value){
         strcpy(stack[top],line);
     } else{
         printf("STACK OVERFLOW");
+        top = 0;
+        strcpy(stack[top],line);
     }
     
     
@@ -49,7 +51,6 @@ void push(char *value){
 char *pop(){
     if(isEmpty() != 1){
         strcpy(line, stack[top]);
-  		printf("%s\n",stack[top]);
         top--;
         strcpy(stack[top], NULL);
         return line;
