@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdlib.h>
+#include <string.h>
 
 int MAXSIZE = 19;
 int top = -1;
@@ -40,7 +40,6 @@ void push(char *value){
         top++;
         strcpy(stack[top],line);
     } else{
-        printf("STACK OVERFLOW");
         top = 0;
         strcpy(stack[top],line);
     }

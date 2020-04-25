@@ -7,6 +7,7 @@
 #include<sys/types.h>
 #include <sys/wait.h>
 #include "writer.h"
+#include "buildinfuncs.h"
 
 
 #define BUFFER_SIZE 256
@@ -64,7 +65,14 @@ int spawnProcess(char **args){
 	if ((int)childProcess == 0){
 		printf("Child spawn: %d\n", getpid());
 
-		if(execvp (args[0], args) == -1){
+		if(strcmp(args[0],"history")==0){
+		 	readFile();
+		 }
+		else if(strcmp(args[0],"cd")==0){
+		 	cd(args);
+		 }
+
+		else if(execvp (args[0], args) == -1){
 			printf("Command Not Found!\n");
 			kill(getpid(), SIGTERM);
 		}
@@ -105,8 +113,9 @@ char *getLine(void){
 			//addline to stack
 			if(!isBlank(ptr)){
         		push(ptr);
+				writeFile();
 			}
-			writeFile();
+			
 			return ptr;
 		}
 		else{
@@ -201,7 +210,6 @@ void shell_loop(){
 
 
 int main(int argc, char *argv[]){
-	readFile();
 	shell_loop();
 	return 0;
 }
