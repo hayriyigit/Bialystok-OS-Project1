@@ -17,7 +17,6 @@ void writeFile(){
         if(*stack[i] != 0){
             fprintf(f,"%s\n",stack[i]);
         }else{
-            printf("Stack is empty");
             break;
         }
         

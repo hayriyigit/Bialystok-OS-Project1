@@ -56,14 +56,11 @@ int isBlank(char *line)
 
 
 int spawnProcess(char **args){
-	printf ("This is the parent. PID=%d\n", getpid());
-
 	pid_t childProcess = fork();
 	int childStatus;
 
 	//process success, inside child process.. 
 	if ((int)childProcess == 0){
-		printf("Child spawn: %d\n", getpid());
 
 		if(strcmp(args[0],"history")==0){
 		 	readFile();
@@ -71,7 +68,9 @@ int spawnProcess(char **args){
 		else if(strcmp(args[0],"cd")==0){
 		 	cd(args);
 		 }
-
+		else if(strcmp(args[0],"help")==0){
+		 	help();
+		 }
 		else if(execvp (args[0], args) == -1){
 			printf("Command Not Found!\n");
 			kill(getpid(), SIGTERM);
@@ -203,8 +202,6 @@ void shell_loop(){
 		spawnProcess(args);
 		free(line);
 		free(args);
-
-		
 	};
 }
 

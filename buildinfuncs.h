@@ -34,3 +34,9 @@ int cd(char **args)
   }
   return 1;
 }
+
+void help(){
+  printf("Welcome to the example shell\n");
+  printf("There is a list of builtin functions: \n");
+  printf("history\ncd\nhelp\nexit\n");
+}
