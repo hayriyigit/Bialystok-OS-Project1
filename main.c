@@ -83,6 +83,12 @@ int spawnProcess(char **args){
 		else if(strcmp(args[0],"help")==0){
 		 	help();
 		 }
+		 else if(strcmp(args[0],"exit")==0){
+			printf("\033[1;31m");
+			printf("\nExiting ShellEx\n");
+			printf("\033[0m");
+		 	exit(0);
+		 }
 		else if(execvp (args[0], args) == -1){
 			printf("Command Not Found!\n");
 			kill(getpid(), SIGTERM);
