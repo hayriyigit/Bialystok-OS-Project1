@@ -1,9 +1,12 @@
-#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "stack.h"
-
+/**
+ * writes to history file the last 20 commands using stack
+ * 
+ * out: void
+*/
 void writeFile(){
     FILE *f = fopen(".file.txt", "w");
     if (f == NULL)

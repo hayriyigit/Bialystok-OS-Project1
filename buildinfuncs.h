@@ -1,3 +1,8 @@
+/**
+ * Reads file that contains the last 20 commands. reads until eof or null terminated.
+ * param: none
+ * out: void
+*/
 void readFile(){
     
     FILE * fp;
@@ -22,7 +27,10 @@ void readFile(){
      if (line)
         free(line);
 }
-
+/**
+ * change directory command, expects string. 
+ * returns int with status of process
+*/
 int cd(char **args)
 {
   if (args[1] == NULL) {
@@ -34,9 +42,17 @@ int cd(char **args)
   }
   return 1;
 }
-
+/**
+ * prints list of functions!
+ * param: none
+ * out: none
+*/
 void help(){
-  printf("Welcome to the example shell\n");
+  printf("\033[1;35m");
+  printf("Welcome to the ShellEx shell\n");
   printf("There is a list of builtin functions: \n");
+  printf("You can use this shell as a normal Linux terminal (hopefully!) \n");
+  printf("\033[1;36m");
   printf("history\ncd\nhelp\nexit\n");
+  printf("\033[0m");
 }
