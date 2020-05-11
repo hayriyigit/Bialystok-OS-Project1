@@ -1,10 +1,10 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<unistd.h>
-#include<signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <signal.h>
 #include <ctype.h>
-#include<sys/types.h>
+#include <sys/types.h>
 #include <sys/wait.h>
 #include "writer.h"
 #include "buildinfuncs.h"
@@ -87,7 +87,11 @@ int spawnProcess(char **args){
 			printf("\033[1;31m");
 			printf("\nExiting ShellEx\n");
 			printf("\033[0m");
-		 	exit(0);
+			
+			int c_pid = getpid();
+			int p_pid = getppid();
+			kill(p_pid, SIGTERM);
+		 	kill(c_pid,SIGTERM);
 		 }
 		else if(execvp (args[0], args) == -1){
 			printf("Command Not Found!\n");
